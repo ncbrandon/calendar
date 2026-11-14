@@ -4,6 +4,25 @@ Version 1.0.0 · Updated November 14, 2026 · Project: ncbrandon/calendar
 
 This repository contains a working self-hosted application, not just a mockup. It uses Python 3.12+, SQLite, and browser JavaScript. No paid API, build step, cloud database, or Python package installation is required. Docker is optional. The same application is intended for x86-64 and ARM64; ARM hardware and physical monitors still require installation testing.
 
+## One touchscreen now, second screen later
+
+Current purchasing decision (November 14, 2026): **one 32-inch touchscreen now**, with the option to add a second in 2027. Keep the Proxmox server plus one Raspberry Pi 5. A mini PC is optional.
+
+Buy one monitor, one mount, one micro-HDMI-to-HDMI video cable, and one USB touch data cable now. The verified November 14 listing for the Beetronics 32TS7M was **$919 before sales tax**, with free shipping advertised. Pair prices below remain for expansion planning; they are not the current purchase quantity or a guarantee of next year's prices. The existing equipment table describes the eventual two-screen arrangement.
+
+The first screen shows a full-size current month. Previous/next arrows open any other month; Today returns to the current month. Event editing, the on-screen keyboard, P-code sample reminders, weekly duty dropdowns, payroll markers, media, effects, and Markdown exports work in the existing single-month view.
+
+For the first-screen kiosk, copy `scripts/kiosk.env.example` to `kiosk.env`, keep `MONITOR_COUNT=1`, and fill in only CALENDAR_URL, LEFT_OUTPUT, and LEFT_TOUCH. Leave RIGHT_OUTPUT and RIGHT_TOUCH commented out. Run `bash scripts/kiosk.sh`. It configures only the first output, maps only its touchscreen, and opens only `/?screen=left&touch=1`. Existing two-monitor installations must explicitly set `MONITOR_COUNT=2` before using this launcher update. Use `/?screen=left&touch=1` to open this view manually without the launcher; the central management page can still show both months.
+
+When adding the second monitor:
+
+1. Connect its video cable to the Pi's second micro-HDMI port and its touch USB cable to a free USB port.
+2. Set `MONITOR_COUNT=2` in the same kiosk.env. Uncomment and fill in RIGHT_OUTPUT and RIGHT_TOUCH using actual names from xrandr/xinput. Keep both screens at the configured matching resolution.
+3. Stop and restart the kiosk launcher (or reboot the configured display PC/Pi).
+4. The first display shows the current month and the second shows the next month. Test each touchscreen's mapping and display power behavior.
+
+No database migration, second server, new application instance, or re-entry of events/sample records is needed. Choose the Pi 5's power supply and cooling for the final two-screen use now; purchase the extra screen, mount, and cables when ready. Physical dual-screen operation still requires testing with the chosen hardware.
+
 ## Current U.S. touchscreen prices — checked November 14, 2026
 
 Your selected arrangement can use the existing Proxmox server plus one Raspberry Pi 5 driving both displays. A mini PC is optional; it is not an additional requirement.
@@ -25,7 +44,7 @@ Budget $1,838 for the Beetronics pair, plus the chosen mounts, cable lengths, an
 
 ## Recommended equipment
 
-Use an existing Proxmox host for the application and one local mini PC for both monitors. Proxmox does not connect to the touchscreens directly.
+Use your existing Proxmox host for the application and a Raspberry Pi 5 at the screen(s). A mini PC is an alternative display computer. Proxmox does not connect to the touchscreens directly. The table below lists the eventual two-screen configuration; purchase one screen and its mounting/cables initially.
 
 | Qty | Equipment | Specification / buying guidance | Planning allowance, USD |
 | --- | --- | --- | ---: |
@@ -52,7 +71,7 @@ A Pi 5 with 8 GB RAM, official 27 W USB-C supply, active cooling/case, 128+ GB S
 
 ## What version 1.0 does
 
-- Central management page plus separate left/right touchscreen browser views.
+- Central management page, one-screen kiosk by default, and optional separate left/right touchscreen views.
 - Current month on the left, next month on the right; paired arrows and Today.
 - Shared month navigation, synchronized by polling every 10 seconds.
 - Return to the current month after five minutes of historical browsing; reset at a new month in the facility timezone.
@@ -178,22 +197,22 @@ sudo systemctl enable --now waterworks-calendar
 
 Run the application as a normal user with write access to its data directory. Use one server instance per database. Do not put SQLite on an SMB/NFS share.
 
-## Connect and commission both touchscreens
+## Connect and commission touchscreens
 
 On the display mini PC, install a Linux desktop with an **X11 session** (for example Debian XFCE), Chromium, Python 3, `xrandr`, `xinput`, and `xset`. On Debian the X utilities are supplied by `x11-xserver-utils` and `xinput`; package names can differ on other distributions. Select an X11 login session. The supplied scripts do not configure a Wayland compositor. On a Pi, select a supported X11 session if available; otherwise manually configure its compositor or use the mini-PC recommendation.
 
-1. Connect each monitor's video cable AND USB touch cable. Set both monitors to landscape 1920×1080 at 100% scale. Position left at 0,0 and right at 1920,0.
+1. Start with one monitor; add the second when ready. Connect each installed monitor's video cable AND USB touch cable. Set both monitors to landscape 1920×1080 at 100% scale. Position left at 0,0 and right at 1920,0.
 2. Clone/download this repository onto the display PC too, or copy the scripts folder and kiosk.env template. You do not need to start another application server there.
 3. Run `xrandr --query` and `xinput list` in a terminal inside the graphical session. Identify each output and touch device; disconnect one USB briefly if names are ambiguous. Identical names may require device IDs or USB-specific naming rules. IDs can change after reboot, so test persistence and use unique names where available.
 4. Copy `scripts/kiosk.env.example` to `kiosk.env` in the project root. Enter the server URL and the exact output/device names. Do not put passwords in this file.
-5. Run `bash scripts/kiosk.sh` as the logged-in desktop user. It maps each touch device to its screen and starts two independently supervised Chromium profiles:
+5. Run `bash scripts/kiosk.sh` as the logged-in desktop user. It maps each installed touch device to its screen. MONITOR_COUNT=1 starts only the left profile; MONITOR_COUNT=2 starts two independently supervised profiles:
 
 ```text
 https://YOUR-SERVER/?screen=left&touch=1
 https://YOUR-SERVER/?screen=right&touch=1
 ```
 
-6. Sign in once in each profile. Session cookies last up to 30 days; restarting the application server invalidates sessions, so sign in again after restart. This release has no unattended sign-in credential stored in the launcher.
+6. Sign in once in each active profile. Session cookies last up to 30 days; restarting the application server invalidates sessions, so sign in again after restart. This release has no unattended sign-in credential stored in the launcher.
 7. Copy `scripts/waterworks-kiosk.desktop` into the desktop user's `~/.config/autostart/`, replacing `/ABSOLUTE/PATH` in Exec. Configure desktop auto-login only if appropriate for the room. Disable OS lock-screen/power settings that conflict with the calendar schedule.
 
 The launcher assumes the window manager honors Chromium's requested screen positions. Test your chosen window manager; create window placement rules if it moves both windows to the same screen. Press Alt+F4 to close a kiosk window; the supervisor restarts it. Stop the launcher process to end supervision.
