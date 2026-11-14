@@ -4,6 +4,25 @@ Version 1.0.0 · Updated November 14, 2026 · Project: ncbrandon/calendar
 
 This repository contains a working self-hosted application, not just a mockup. It uses Python 3.12+, SQLite, and browser JavaScript. No paid API, build step, cloud database, or Python package installation is required. Docker is optional. The same application is intended for x86-64 and ARM64; ARM hardware and physical monitors still require installation testing.
 
+## Current U.S. touchscreen prices — checked November 14, 2026
+
+Your selected arrangement can use the existing Proxmox server plus one Raspberry Pi 5 driving both displays. A mini PC is optional; it is not an additional requirement.
+
+These are listed USD prices before sales tax, mounts, and any checkout shipping charges. Stock and prices can change. All options below are 32-inch-class touchscreens, exceeding the requested 28-inch minimum.
+
+| Display / seller | Condition | Each | Two | Availability / installation notes |
+| --- | --- | ---: | ---: | --- |
+| [Beetronics 32TS7M, direct](https://www.beetronics.com/32-inch-touchscreen) | New | $919.00 | $1,838.00 | Listed in stock; manufacturer advertises free shipping and 30-day returns. Metal housing, 100 mm VESA, explicit Linux support, two-year warranty. |
+| [ViewSonic TD3207, B&H](https://www.bhphotovideo.com/c/product/1798898-REG/viewsonic_td3207_32_open_frame_touch.html) | New | $1,029.99 | $2,059.98 | Listed in stock; free delivery advertised, confirm for your address. Open-frame design; mounting/edge protection needs planning. |
+| [Greentouch 3202E, Tyco Touch](https://tycotouch.com/products/greentouch-3202e) | New | $1,080.00 | $2,160.00 | Base variant without optional PC or mount. Built to order, approximately four-week lead time, noncancelable; confirm Raspberry Pi/Linux touch support before considering. |
+| [ViewSonic TD3207-S, manufacturer outlet](https://www.viewsonic.com/us/td3207-s.html) | Refurbished | $771.99 | $1,543.98 if two become available | Out of stock when checked. Refurbished warranty specifications list a 90-day repair warranty, rather than the new-product three-year warranty. |
+
+Purchase preference for this project: **two Beetronics 32TS7M units**, because the listed new price is lower than the other verified new options above, Linux support is explicit, and a complete metal housing simplifies wall installation. Buy/test one first with the actual Pi, touch mapping, and sleep/wake behavior before purchasing the second. Manufacturer support does not replace an actual dual-screen installation test.
+
+The [new ViewSonic direct listing](https://www.viewsonic.com/us/products/monitors/touch-screen-monitors/td3207.html) also shows $1,029.99 and a three-year limited warranty. Its Raspberry Pi/Linux touch behavior still needs confirmation. No current U.S. iiyama price was verified in this comparison, so earlier iiyama allowances remain planning estimates rather than purchase quotes.
+
+Budget $1,838 for the Beetronics pair, plus the chosen mounts, cable lengths, and sales tax. Standard HDMI alone does not carry touch input; each screen also needs a USB data connection to the Pi. Avoid substituting inexpensive Android signage/tablet products without verifying external USB touch support.
+
 ## Recommended equipment
 
 Use an existing Proxmox host for the application and one local mini PC for both monitors. Proxmox does not connect to the touchscreens directly.
