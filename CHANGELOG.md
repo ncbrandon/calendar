@@ -16,3 +16,9 @@
 - Added dated U.S. touchscreen price comparison, pair totals, stock status, shipping notes, and purchase preference.
 - Clarified that Proxmox plus one Raspberry Pi can run the two-screen arrangement; a mini PC is optional.
 - No application code changed.
+
+## One-screen installation update — 2026-11-14
+
+- Changed the kiosk template to one monitor by default; second-output and second-touch names are only required with MONITOR_COUNT=2.
+- Retained the full-size single-month view and navigation, and the existing two-screen expansion path on the same Pi/server/database.
+- Updated purchasing quantities to one monitor now, with an optional second in 2027; documented the upgrade steps.
