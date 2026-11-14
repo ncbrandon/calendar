@@ -3,6 +3,6 @@ Type=Application
 Name=Waterworks Calendar Wall
 Comment=Start both touchscreen calendar displays
 # Replace /ABSOLUTE/PATH with your installation folder before use.
-Exec=/ABSOLUTE/PATH/waterworks-calendar/scripts/kiosk.sh
+Exec=/usr/bin/bash /ABSOLUTE/PATH/waterworks-calendar/scripts/kiosk.sh
 Terminal=false
 X-GNOME-Autostart-enabled=true
