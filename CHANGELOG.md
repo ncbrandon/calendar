@@ -10,3 +10,9 @@
 - Added scheduled GIF/image/video playback, seasonal/weather effects, work-hour overlay, and X11 kiosk/monitor-power scripts.
 - Included Docker/native installation, Proxmox/Pi guidance, equipment recommendations, and tests.
 - Limitations: one shared administrator; manual interpretation of newly uploaded permits; no email/SMS, automatic state refresh, offline writes, or physical hardware validation.
+
+## Documentation update — 2026-11-14
+
+- Added dated U.S. touchscreen price comparison, pair totals, stock status, shipping notes, and purchase preference.
+- Clarified that Proxmox plus one Raspberry Pi can run the two-screen arrangement; a mini PC is optional.
+- No application code changed.
