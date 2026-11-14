@@ -1,0 +1,8 @@
+.env
+data/
+__pycache__/
+*.pyc
+*.tar.gz
+*.zip
+kiosk.env
+work-hours-cache.json
