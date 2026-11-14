@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Waterworks Calendar Wall
-Comment=Start both touchscreen calendar displays
+Comment=Start one or two touchscreen calendar displays
 # Replace /ABSOLUTE/PATH with your installation folder before use.
 Exec=/usr/bin/bash /ABSOLUTE/PATH/waterworks-calendar/scripts/kiosk.sh
 Terminal=false
