@@ -8,16 +8,32 @@ if [[ ! -f kiosk.env ]]; then
 fi
 # Local operator-controlled configuration file; never populate it from uploads.
 source kiosk.env
-: "${CALENDAR_URL:?}" "${LEFT_OUTPUT:?}" "${RIGHT_OUTPUT:?}" "${LEFT_TOUCH:?}" "${RIGHT_TOUCH:?}"
+MONITOR_COUNT=${MONITOR_COUNT:-1}
+SCREEN_WIDTH=${SCREEN_WIDTH:-1920}
+SCREEN_HEIGHT=${SCREEN_HEIGHT:-1080}
+if [[ "$MONITOR_COUNT" != 1 && "$MONITOR_COUNT" != 2 ]]; then
+  echo 'MONITOR_COUNT must be 1 or 2.' >&2
+  exit 1
+fi
+: "${CALENDAR_URL:?}" "${LEFT_OUTPUT:?}" "${LEFT_TOUCH:?}"
+if [[ "$MONITOR_COUNT" == 2 ]]; then
+  : "${RIGHT_OUTPUT:?Set RIGHT_OUTPUT for two monitors}" "${RIGHT_TOUCH:?Set RIGHT_TOUCH for two monitors}"
+fi
 if [[ "${XDG_SESSION_TYPE:-x11}" != x11 ]]; then
   echo 'This launcher requires X11. Select an X11 session; see docs/waterworks-calendar.md.' >&2
   exit 1
 fi
 CHROME=$(command -v chromium || command -v chromium-browser || true)
 if [[ -z "$CHROME" ]]; then echo 'Install Chromium first.' >&2; exit 1; fi
-xrandr --output "$LEFT_OUTPUT" --mode "${SCREEN_WIDTH}x${SCREEN_HEIGHT}" --primary --pos 0x0 --output "$RIGHT_OUTPUT" --mode "${SCREEN_WIDTH}x${SCREEN_HEIGHT}" --pos "${SCREEN_WIDTH}x0"
+if [[ "$MONITOR_COUNT" == 2 ]]; then
+  xrandr --output "$LEFT_OUTPUT" --mode "${SCREEN_WIDTH}x${SCREEN_HEIGHT}" --primary --pos 0x0 --output "$RIGHT_OUTPUT" --mode "${SCREEN_WIDTH}x${SCREEN_HEIGHT}" --pos "${SCREEN_WIDTH}x0"
+else
+  xrandr --output "$LEFT_OUTPUT" --mode "${SCREEN_WIDTH}x${SCREEN_HEIGHT}" --primary --pos 0x0
+fi
 xinput map-to-output "$LEFT_TOUCH" "$LEFT_OUTPUT"
-xinput map-to-output "$RIGHT_TOUCH" "$RIGHT_OUTPUT"
+if [[ "$MONITOR_COUNT" == 2 ]]; then
+  xinput map-to-output "$RIGHT_TOUCH" "$RIGHT_OUTPUT"
+fi
 xset s off
 xset -dpms
 runtime_dir="${XDG_CACHE_HOME:-$HOME/.cache}/waterworks-calendar"
@@ -31,6 +47,8 @@ launch() {
   done
 }
 launch left 0 &
-launch right "$SCREEN_WIDTH" &
+if [[ "$MONITOR_COUNT" == 2 ]]; then
+  launch right "$SCREEN_WIDTH" &
+fi
 python3 scripts/display-power.py &
 wait
