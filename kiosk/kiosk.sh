@@ -6,6 +6,7 @@ CONF="$HOME/.config/opsboard"
 source "$CONF/kiosk.env"
 MODE="${MODE:-left}"; TOKEN="${TOKEN:-}"; HARDWARE_SLEEP="${HARDWARE_SLEEP:-1}"
 SWAP_SCREENS="${SWAP_SCREENS:-0}"; SWAP_TOUCH="${SWAP_TOUCH:-0}"; TOUCH_MATCH="${TOUCH_MATCH:-touch}"
+TOUCH_SCREEN="${TOUCH_SCREEN:-left}"     # with only one touch panel: which screen it is on
 LOG="$CONF/kiosk.log"
 exec >>"$LOG" 2>&1
 echo "---- $(date) starting, mode=$MODE"
@@ -59,6 +60,13 @@ if [[ "$MODE" == "both" ]]; then
     if [[ "$SWAP_TOUCH" == 1 ]]; then TOUCH=("${TOUCH[1]}" "${TOUCH[0]}"); fi
     xinput map-to-output "${TOUCH[0]}" "$OUT_LEFT"
     xinput map-to-output "${TOUCH[1]}" "$OUT_RIGHT"
+  elif [[ ${#TOUCH[@]} -eq 1 ]]; then
+    # One touchscreen and one plain monitor: keep every touch on the touchscreen.
+    if [[ "$TOUCH_SCREEN" == right ]]; then TOUCH_OUT="$OUT_RIGHT"; else TOUCH_OUT="$OUT_LEFT"; fi
+    echo "One touch panel: mapping it to the $TOUCH_SCREEN screen ($TOUCH_OUT)"
+    xinput map-to-output "${TOUCH[0]}" "$TOUCH_OUT"
+  else
+    echo "No touch panel matched TOUCH_MATCH=$TOUCH_MATCH. Run  xinput list  and check the name."
   fi
 else
   launch "$MODE" 0

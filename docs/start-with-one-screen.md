@@ -80,4 +80,18 @@ flowchart LR
    ```
 4. Test: swipe on either screen and both move together; tap a day on each and check the touch lands on the right screen.
 
+### A plain monitor for the second screen
+
+The second screen does not have to be a touchscreen. It only shows next month; all taps and swipes happen on the
+first screen, and both move together. A plain 32" monitor such as the
+[ViewSonic VA3209M](https://www.viewsonic.com/us/products/va3209m.html) ($149.99, checked November 14, 2026)
+makes the second screen about $150 plus, with one Pi per screen, a Pi and cables.
+
+- **One Pi per screen:** set up the plain monitor's Pi as `right`. Nothing else changes.
+- **One Pi for both (Variant B):** the launcher ties the single touch panel to the screen named in `TOUCH_SCREEN=`
+  in the kiosk settings (`left` by default), so a touch on its right edge does not land on the other monitor.
+- The plain screen still shows arrows and on-call dropdowns; nobody can tap them there, and they do no harm.
+- Mount by the screen edges, not the outer frames: a touch monitor and an office monitor of the same size have
+  different bezels and depths.
+
 Nothing in the calendar, the sampling plan or the settings needs to change.

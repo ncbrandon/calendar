@@ -84,7 +84,8 @@ The log is `~/.config/opsboard/kiosk.log`.
 |---|---|
 | Months are on the wrong screens (Variant B) | `SWAP_SCREENS=1` |
 | Touching the left screen acts on the right (Variant B) | `SWAP_TOUCH=1` |
-| Touch covers both screens at once (Variant B) | Run `xinput list`, find the two touch panels, and put a word from their name in `TOUCH_MATCH=` |
+| Touch covers both screens at once (Variant B) | Run `xinput list`, find the touch panel(s), and put a word from their name in `TOUCH_MATCH=` |
+| One touchscreen and one plain monitor on one Pi, and taps land in the wrong place | Check `TOUCH_SCREEN=` says which screen has the touch (`left` or `right`), then restart |
 | A tap does not wake the monitors | Some monitors ignore everything while asleep. Set `HARDWARE_SLEEP=0`: the screen shows a black page instead of powering off |
 | Touch is offset by an inch or so (IR frames) | The frame is not square to the picture. Re-seat it, or run the calibration tool that came with the frame |
 | Everything is too small or too large | The page scales to the screen height. Set the monitor to its native resolution (1920x1080) in the desktop's Screen Configuration |
