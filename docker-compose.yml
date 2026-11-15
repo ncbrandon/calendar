@@ -1,0 +1,11 @@
+services:
+  opsboard:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      OPSBOARD_DATA: /data
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data

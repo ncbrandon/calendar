@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 660" width="860" height="660" role="img">
+<style>
+  text { font-family: Helvetica, Arial, sans-serif; fill: #1b2733; }
+  .t { font-size: 20px; font-weight: bold; } .l { font-size: 13px; } .s { font-size: 11px; fill: #51606f; }
+  .box { fill: #eef3f8; stroke: #1b2733; stroke-width: 1.5; } .scr { fill: #16212e; stroke: #1b2733; stroke-width: 2; }
+  .pi { fill: #d7f0dc; stroke: #1b2733; stroke-width: 1.5; } .w { fill: #fff; }
+  .hdmi { stroke: #2166c4; stroke-width: 3; fill: none; } .usb { stroke: #2f9e77; stroke-width: 3; fill: none; }
+  .pwr { stroke: #c0392b; stroke-width: 3; fill: none; } .net { stroke: #7a5cc4; stroke-width: 2; fill: none; stroke-dasharray: 6 5; }
+  .dim { stroke: #51606f; stroke-width: 1; fill: none; } .wt { fill: #fff; font-size: 15px; font-weight: bold; }
+</style>
+<rect width="860" height="660" class="w"/>
+<text x="40" y="38" class="t">Wiring: one Raspberry Pi drives both screens (Variant B)</text>
+<rect x="60" y="70" width="320" height="180" rx="6" class="scr"/><text x="220" y="155" text-anchor="middle" class="wt">Left screen + IR touch frame</text><text x="220" y="178" text-anchor="middle" class="wt" style="font-weight:normal;font-size:13px">this month</text>
+<rect x="480" y="70" width="320" height="180" rx="6" class="scr"/><text x="640" y="155" text-anchor="middle" class="wt">Right screen + IR touch frame</text><text x="640" y="178" text-anchor="middle" class="wt" style="font-weight:normal;font-size:13px">next month</text>
+<rect x="330" y="320" width="200" height="70" rx="6" class="pi"/><text x="430" y="348" text-anchor="middle" class="l">Raspberry Pi 5 (4 GB)</text><text x="430" y="366" text-anchor="middle" class="s">server + both screens</text>
+<path d="M360 320 V285 H180 V250" class="hdmi"/><text x="186" y="278" class="s">HDMI 0</text>
+<path d="M500 320 V285 H680 V250" class="hdmi"/><text x="674" y="278" text-anchor="end" class="s">HDMI 1</text>
+<path d="M260 250 V305 H400 V320" class="usb"/><text x="266" y="300" class="s">left frame USB</text>
+<path d="M600 250 V305 H460 V320" class="usb"/><text x="594" y="300" text-anchor="end" class="s">right frame USB</text>
+<rect x="580" y="335" width="80" height="40" rx="4" class="box"/><text x="620" y="359" text-anchor="middle" class="s">Pi power</text>
+<path d="M580 355 H530" class="pwr"/><path d="M620 375 V450" class="pwr"/>
+<path d="M100 250 V450" class="pwr"/><text x="108" y="420" class="s">monitor power</text><path d="M760 250 V450" class="pwr"/><text x="752" y="420" text-anchor="end" class="s">monitor power</text>
+<rect x="60" y="450" width="740" height="34" rx="4" class="box"/><text x="430" y="472" text-anchor="middle" class="l">Surge protector (one wall outlet)</text>
+<path d="M430 390 V450" class="net" style="display:none"/><path d="M380 390 V520" class="net"/>
+<rect x="250" y="520" width="360" height="54" rx="6" class="box"/><text x="430" y="543" text-anchor="middle" class="l">Plant network</text><text x="430" y="561" text-anchor="middle" class="s">your PC and phone open the web page on the Pi</text>
+<g transform="translate(40,610)">
+  <line x1="0" y1="0" x2="40" y2="0" class="hdmi"/><text x="48" y="4" class="l">HDMI (picture)</text>
+  <line x1="180" y1="0" x2="220" y2="0" class="usb"/><text x="228" y="4" class="l">USB (touch)</text>
+  <line x1="340" y1="0" x2="380" y2="0" class="pwr"/><text x="388" y="4" class="l">Power</text>
+  <line x1="460" y1="0" x2="500" y2="0" class="net"/><text x="508" y="4" class="l">Network (Wi-Fi or Ethernet)</text>
+</g>
+<text x="40" y="640" class="s">HDMI 0 is the micro-HDMI port nearest the USB-C power plug. Keep left cables on the left ports to make setup easier.</text>
+</svg>

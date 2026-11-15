@@ -1,6 +1,10 @@
-data
-.env
 .git
+.venv
 __pycache__
+.pytest_cache
+data
+data-dev
+.env
+docs
+diagrams
 tests
-*.zip

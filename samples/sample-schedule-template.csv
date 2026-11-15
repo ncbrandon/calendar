@@ -1,0 +1,7 @@
+name,program,location,frequency,anchor_date,end_date,samples_per_period,allowed_months,cost,lead_days,lab,notes
+Lead and Copper,drinking,Distribution (10 taps),triennial,2026-01-01,,1,"6,7,8,9",450,21,State lab,June-Sept only
+Inorganics (IOC),drinking,Well 1 entry point,triennial,2026-01-01,,1,,310,14,State lab,
+Nitrate,drinking,Well 1 entry point,annual,2026-01-01,,1,,35,14,State lab,
+Total Coliform,drinking,Distribution,monthly,2026-01-01,,2,,22,7,State lab,2 per month
+BOD5 / TSS,wastewater,Outfall 001,monthly,2026-01-01,,1,,95,7,Contract lab,Permit Part I.A
+Whole Effluent Toxicity,wastewater,Outfall 001,annual,2026-01-01,,1,,1200,21,Contract lab,

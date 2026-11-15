@@ -1,0 +1,21 @@
+[Unit]
+Description=OpsBoard calendar server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=opsboard
+Group=opsboard
+WorkingDirectory=/opt/opsboard
+EnvironmentFile=/etc/opsboard.env
+# One worker on purpose: the screens share a little live state held in memory.
+ExecStart=/opt/opsboard/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8080 --workers 1
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

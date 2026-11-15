@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" class="display">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>OpsBoard wall screen</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body data-kbd="1">
+<div class="screen">
+  <div class="topbar">
+    <div class="weather" id="weather"></div>
+    <div class="month-head" id="head"></div>
+    <div class="clock"><div class="time" id="time"></div><div class="muted" id="date"></div><div class="legend" id="legend"></div></div>
+  </div>
+  <div id="cal" style="flex:1;min-height:0"></div>
+</div>
+<canvas id="fx"></canvas>
+<div id="video"><video playsinline></video><span>Tap to close</span></div>
+<div class="offline" id="offline">Reconnecting to the server&hellip;</div>
+<div id="dark"></div>
+<script src="/static/common.js"></script>
+<script src="/static/keyboard.js"></script>
+<script src="/static/ambient.js"></script>
+<script>
+'use strict';
+const side = new URLSearchParams(location.search).get('screen') === 'right' ? 'right' : 'left';
+const index = side === 'right' ? 1 : 0;       // left shows this month, right shows next month
+let state = null, shown = null, lastTouch = Date.now(), ambient = null, gifAt = 0, gifIndex = 0;
+const played = {}, loadedAt = Date.now();
+const post = (path, body) => api(path, { method: 'POST', body: body || {} }).then(apply).catch((e) => toast(e.message));
+let view;
+
+function apply(s) {
+  state = s;
+  $('#dark').classList.toggle('on', s.dark);
+  if (s.dark) { Ambient.pause(); stopVideo(); if (view.openDate) view.closeDay(); if (view.selected) view.select(null); } else Ambient.resume();
+  const ym = ymAdd(ymOf(s.today), s.nav_offset + index);
+  view.showToday = s.nav_offset !== 0;
+  const key = [ym, s.version, s.today, s.nav_offset].join('|');
+  if (key !== shown) { shown = key; view.load(ym, { background: true }).catch(() => { shown = null; }); }
+}
+
+function tick() {
+  const now = new Date();
+  $('#time').textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  $('#date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  if (Date.now() - lastTouch > 120000) {                                       // nobody is there: put the calendar back
+    if (view.openDate) view.closeDay();
+    if (view.selected) view.select(null);
+  }
+  if (now.getHours() === 3 && Date.now() - loadedAt > 3600000) location.reload();  // nightly fresh start
+  if (ambient && !state?.dark) { rotateGif(); maybePlayVideo(now); }
+  pixelShift(now);
+}
+
+async function loadAmbient() {
+  try { ambient = await api('/api/ambient?screen=' + side); } catch (e) { return; }
+  Ambient.set(ambient.effect, ambient.weather);
+  if (state?.dark) Ambient.pause();
+  gifAt = 0;
+  rotateGif();
+}
+
+function rotateGif() {
+  if (Date.now() - gifAt < ambient.gif_seconds * 1000) return;
+  gifAt = Date.now();
+  const w = ambient.weather, box = $('#weather'), gif = ambient.gifs.length ? ambient.gifs[gifIndex++ % ambient.gifs.length] : null;
+  box.replaceChildren(
+    ...[gif && h('img', { src: gif.url, alt: gif.title }),
+      h('div', {}, w ? h('div', { class: 'temp' }, `${w.temp}°${w.unit}`) : null,
+        h('div', { class: 'muted' }, w ? `${w.label} · wind ${w.wind_from ? w.wind_from + ' ' : ''}${w.wind_mph} mph` : ''),
+        w && w.humidity != null ? h('div', { class: 'muted' }, `${w.humidity}% humidity${w.rain_rate ? ` · rain ${w.rain_rate} in/hr` : ''}`) : null)].filter(Boolean));
+}
+
+// Nudge the whole picture a few pixels every few minutes so that lines and labels do not sit on the same pixels all day.
+const SHIFTS = [[0, 0], [5, 0], [5, 4], [0, 4], [-5, 4], [-5, 0], [-5, -4], [0, -4], [5, -4]];
+function pixelShift(now) {
+  const on = ambient && ambient.pixel_shift && !view.openDate;
+  const [x, y] = on ? SHIFTS[Math.floor(now.getTime() / 240000) % SHIFTS.length] : [0, 0];
+  const want = `translate(${x}px, ${y}px)`, el = $('.screen');
+  if (el.style.transform !== want) el.style.transform = want;
+}
+
+function maybePlayVideo(now) {
+  if ($('#video').classList.contains('on') || view.openDate || Date.now() - lastTouch < 60000) return;
+  const minute = now.getHours() * 60 + now.getMinutes();
+  for (const v of ambient.videos) {
+    // Both screens use the wall clock, so a video set to "both" starts on them together.
+    if (minute % v.interval_min === 0 && played[v.id] !== minute) { played[v.id] = minute; return playVideo(v); }
+  }
+}
+
+function playVideo(v) {
+  const el = $('#video video');
+  el.src = v.url; el.muted = v.muted;
+  $('#video').classList.add('on');
+  Ambient.pause();
+  el.play().catch(() => { el.muted = true; el.play().catch(stopVideo); });
+}
+
+function stopVideo() {
+  const box = $('#video');
+  if (!box.classList.contains('on')) return;
+  box.classList.remove('on');
+  const el = $('#video video'); el.pause(); el.removeAttribute('src'); el.load();
+  if (!state?.dark) Ambient.resume();
+}
+
+(async function start() {
+  let boot;
+  for (;;) { try { boot = await api('/api/bootstrap'); break; } catch (e) { await new Promise((r) => setTimeout(r, 5000)); } }
+  view = new MonthView($('#cal'), {
+    nav: true, headTarget: $('#head'), source: 'touch', categories: boot.categories,
+    onNav: (delta) => post('/api/nav', { offset: (state?.nav_offset || 0) + delta }),
+    onToday: () => post('/api/nav', { offset: 0 }),
+  });
+  $('#legend').replaceChildren(...boot.employees.map((e) => h('span', {}, h('i', { style: `background:${e.color}` }), e.name)));
+  $('#dark').addEventListener('pointerdown', () => post('/api/wake'));
+  $('#video').addEventListener('pointerdown', stopVideo);
+  $('#video video').addEventListener('ended', stopVideo);
+  $('#video video').addEventListener('error', stopVideo);
+  document.addEventListener('pointerdown', () => { lastTouch = Date.now(); }, true);
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  const source = new EventSource('/api/stream');
+  source.onmessage = (m) => { $('#offline').classList.remove('on'); apply(JSON.parse(m.data)); };
+  source.onerror = () => $('#offline').classList.add('on');
+  api('/api/state').then(apply).catch(() => {});
+
+  tick(); setInterval(tick, 1000);
+  loadAmbient(); setInterval(loadAmbient, 2 * 60 * 1000);
+})();
+</script>
+</body>
+</html>

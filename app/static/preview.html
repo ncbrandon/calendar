@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpsBoard wall preview</title>
+<style>
+  body { margin: 0; min-height: 100vh; background: #05080c; color: #8fa3b8; font-family: system-ui, sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .8rem; }
+  .wall { display: flex; gap: 1.2vw; width: 98vw; }
+  iframe { flex: 1; min-width: 0; aspect-ratio: 16 / 9; border: .5vw solid #1b1f24; border-radius: .6vw; background: #000; }
+  p { margin: 0; font-size: .9rem; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wall">
+  <iframe src="/display?screen=left" title="Left screen"></iframe>
+  <iframe src="/display?screen=right" title="Right screen"></iframe>
+</div>
+<p>Drag sideways to change month (the &laquo; &raquo; buttons, or a two-finger swipe on a touch screen, jump a year). Click a day to enlarge its week.</p>
+</body>
+</html>

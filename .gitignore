@@ -1,8 +1,14 @@
-.env
+# Your data, uploads, and secrets never go to GitHub
 data/
+data-dev/
+.env
+*.env
+!.env.example
+!kiosk/kiosk.env.example
+# Python
+.venv/
 __pycache__/
 *.pyc
-*.tar.gz
-*.zip
-kiosk.env
-work-hours-cache.json
+.pytest_cache/
+# OS
+.DS_Store
