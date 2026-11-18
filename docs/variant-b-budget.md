@@ -7,7 +7,7 @@ screens from its two HDMI ports.
 - Everything depends on one Pi and one SD card. If either fails, both screens and the web page are down, so off-device backups matter.
 - One computer has to be told which touch panel belongs to which monitor. The launcher does this, but identical frames can come up in either order, so expect to flip `SWAP_TOUCH` once. This is the least-proven part of the whole project.
 - It uses the older X11 desktop, because that is what makes two-screen touch mapping reliable.
-- The same stick-on touch frame trade-offs as Variant C.
+- The same stick-on touch frame trade-offs as Variant C, including the unproven Raspberry Pi support. Read [Will the touch frame work on a Pi 5?](variant-c-middle.md#will-the-touch-frame-work-on-a-pi-5) before ordering.
 - Both screens must be within cable reach of the one Pi (use 2 m HDMI cables if they are far apart).
 
 It saves only about $100 over Variant C, so choose it only if you have no Proxmox host to put the server on, which you do. It is here mainly as the stand-alone option.

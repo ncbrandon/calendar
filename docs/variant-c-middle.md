@@ -7,6 +7,7 @@ using ordinary 32" monitors and adding an infrared touch frame to the front of e
 - The frames are generic imports. Quality varies, and the frame must match your monitor's picture size. **Measure before ordering** (step 1 below).
 - The monitors are office grade, not rated for all-day use. Expect a shorter life than Variant A; a replacement is $150.
 - A frame adds a raised bezel about half an inch deep around the screen. Dust or a spider on the sensors can cause phantom touches; wipe the inner edge monthly.
+- **Raspberry Pi support for these frames is not guaranteed.** See [Will the touch frame work on a Pi 5?](#will-the-touch-frame-work-on-a-pi-5) below before ordering.
 
 ## Parts
 
@@ -27,6 +28,46 @@ Prices checked **November 14, 2026**. A link that goes to a search page means I 
 | Adhesive hook-and-loop strips (to fix the Pi behind the monitor) | 1 | $8.00 | $8.00 | [search](https://www.amazon.com/s?k=industrial+hook+and+loop+adhesive+strips) |
 | Ethernet patch cable (optional, steadier than Wi-Fi) | 2 | $8.00 | $16.00 | [search](https://www.amazon.com/s?k=cat6+ethernet+patch+cable+10ft) |
 | **Total** | | | **about $1,060** | |
+
+### Monitor option: Samsung Odyssey G5 G50F (32")
+
+If the ViewSonic is out of stock, the Samsung Odyssey G5 G50F 32" (US model LS32FG502ENXZA) is a good substitute.
+It is 2560x1440, VESA 100x100, and has a height-adjustable stand you will not need on the wall.
+List price is $349.99, but it has sold for $199 to $220 on sale since August 2026, so wait for a sale price.
+At $210 each the total rises by about $120, to about $1,180. The Pi will drive it at 1080p or 1440p; OpsBoard looks the same at either.
+Its picture area is the same as any 32" 16:9 panel, so the frame sizing below still applies. Measure the bezel anyway, as it differs from the ViewSonic.
+[Best Buy listing](https://www.bestbuy.com/site/6667827.p)
+
+### Touch frame brand: GreenTouch
+
+GreenTouch is the most common brand of 32" IR frame in US listings. Its 32" 10-point frames sell for about $200 to $400 depending on seller.
+Read the next section first: several GreenTouch listings say outright that the frame does not support Raspberry Pi.
+
+## Will the touch frame work on a Pi 5?
+
+**Not proven. Plan for it to fail and buy where returns are easy.**
+
+What the research shows (November 2026):
+- Several GreenTouch listings say the frame **does not support Raspberry Pi**. One says the manufacturer has no Linux drivers.
+- Other GreenTouch listings say it is "driver free" on native Linux. The claims contradict each other.
+- No one was found running a GreenTouch frame on a Pi.
+- The frames claim to be standard USB HID touch devices. If that is true, the Pi's built-in `hid-multitouch` driver should handle it with no extra software. That is the reason it *might* work.
+- Elo states that its own IR and capacitive touch products use standard HID and should work on a Raspberry Pi with no driver ([Elo support](https://elosupport.elotouch.com/hc/en-us/articles/31649853461271-Do-Elo-Products-support-Raspberry-Pi-devices)). That is the only maker found that says so in writing.
+
+**If you want a proven-by-the-maker option instead:** the Elo 3203L (part E720061) is a 32" monitor with capacitive touch built in, about $970 to $1,850 depending on seller (CDW listed $1,290). Two of them replace both monitors and both frames. It brings the build to about $2,800, so at that point compare it with [Variant A](variant-a-recommended.md). Note: capacitive touch needs a bare finger or thin glove; IR works with any glove.
+
+### Bench test the frame before mounting anything
+
+Do this on a table with one Pi 5 set up per [kiosk-setup.md](kiosk-setup.md), within the seller's return window.
+
+1. Plug in the frame's USB cable and run `lsusb`. A new line should appear for the frame.
+2. Run `sudo dmesg | tail -20`. Look for `hid-multitouch` and an `input:` line naming the frame. If you only see `hid-generic` or nothing, multi-touch will probably not work.
+3. Install the test tool: `sudo apt install -y evtest`, then `sudo evtest` and pick the frame's number.
+4. Touch with one finger. You should see `ABS_MT_POSITION_X` / `ABS_MT_POSITION_Y` lines change. Touch with two fingers and confirm `ABS_MT_SLOT` shows 0 and 1.
+5. With the calendar running, tap all four corners of the screen. If taps land in the wrong place, see the touch table in [kiosk-setup.md](kiosk-setup.md).
+6. Swipe left/right to change months and try a two-finger swipe to change years.
+
+If step 2 or 4 fails, return the frame. Do not spend hours on it: either try a different frame or move to the Elo option.
 
 ## Tools
 
