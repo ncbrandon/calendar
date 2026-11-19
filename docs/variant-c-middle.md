@@ -7,7 +7,7 @@ using ordinary 32" monitors and adding an infrared touch frame to the front of e
 - The frames are generic imports. Quality varies, and the frame must match your monitor's picture size. **Measure before ordering** (step 1 below).
 - The monitors are office grade, not rated for all-day use. Expect a shorter life than Variant A; a replacement is $150.
 - A frame adds a raised bezel about half an inch deep around the screen. Dust or a spider on the sensors can cause phantom touches; wipe the inner edge monthly.
-- **Raspberry Pi support for these frames is not guaranteed.** See [Will the touch frame work on a Pi 5?](#will-the-touch-frame-work-on-a-pi-5) below before ordering.
+- **Raspberry Pi 5 support for these frames is likely but not proven.** See [Will the touch frame work on a Pi 5?](#will-the-touch-frame-work-on-a-pi-5) below before ordering.
 
 ## Parts
 
@@ -48,16 +48,43 @@ Read the next section first: several GreenTouch listings say outright that the f
 
 ## Will the touch frame work on a Pi 5?
 
-**Not proven. Plan for it to fail and buy where returns are easy.**
+**Probably, but nobody has published a Pi 5 test. Buy one frame first, test it, then buy the second.**
 
-What the research shows (November 2026):
-- Several GreenTouch listings say the frame **does not support Raspberry Pi**. One says the manufacturer has no Linux drivers.
-- Other GreenTouch listings say it is "driver free" on native Linux. The claims contradict each other.
-- No one was found running a GreenTouch frame on a Pi.
-- The frames claim to be standard USB HID touch devices. If that is true, the Pi's built-in `hid-multitouch` driver should handle it with no extra software. That is the reason it *might* work.
-- Elo states that its own IR and capacitive touch products use standard HID and should work on a Raspberry Pi with no driver ([Elo support](https://elosupport.elotouch.com/hc/en-us/articles/31649853461271-Do-Elo-Products-support-Raspberry-Pi-devices)). That is the only maker found that says so in writing.
+What the research found (November 19, 2026):
+- **Working on a Pi 4:** two smart-mirror builds used a 32" IR frame over USB on a Raspberry Pi 4 and describe it
+  as plug and play with no driver install ([SmartBuilds](https://smartbuilds.io/smart-mirror-touchscreen-raspberry-pi/),
+  [Georgia Tech student project](https://ece4873y202008.ece.gatech.edu/sd20f30/files/SmartLookAssemblyTranscript.pdf)).
+  The Pi 4 and Pi 5 run the same Raspberry Pi OS and the same built-in Linux touch driver (`hid-multitouch`),
+  so a frame that works on a Pi 4 should work on a Pi 5. That is reasoning, not a test.
+- **Sellers who say Pi works:** [Amsimpex](https://amsimpex.com/infrared-ir-multi-touch-overlay-frame/),
+  [one Amazon listing](https://www.amazon.ca/Infrared-Interactive-Overlay-Monitor-Whiteboard/dp/B0DRVRHH3R),
+  and the ZZDTOUCH frame ([AliExpress](https://www.aliexpress.com/s/wiki-ssr/article/ir-touch-frame-raspberry-pi)).
+- **Sellers who say it does not:** several [GreenTouch](https://www.amazon.com/GreenTouch-Points-Infrared-Overlay-Screen/dp/B078T62LGF)
+  listings and [one Newegg listing](https://www.newegg.com/31-5-no-limited-ir-touch/p/33X-0034-00006). One GreenTouch
+  listing says the maker has no Linux drivers. This most likely means "we do not support it", not "it cannot work".
+- **Not found:** any report from a Pi 5 owner, or any report of two-finger gestures working on a Pi.
 
-**If you want a proven-by-the-maker option instead:** the Elo 3203L (part E720061) is a 32" monitor with capacitive touch built in, about $970 to $1,850 depending on seller (CDW listed $1,290). Two of them replace both monitors and both frames. It brings the build to about $2,800, so at that point compare it with [Variant A](variant-a-recommended.md). Note: capacitive touch needs a bare finger or thin glove; IR works with any glove.
+### Why the risk is smaller than it sounds
+
+OpsBoard reads touch through the browser's standard pointer events, the same way it reads a mouse. If a frame
+turns out to work only as a single-touch "mouse":
+
+- Tapping days, one-finger swipes (change month), the on-screen keyboard and the planner all still work.
+- Only the **two-finger swipe to change year** is lost. The **«** and **»** buttons at the top of the calendar do the same job.
+
+So the frame is only useless if the Pi does not see it at all (unlikely for a standard USB touch device). Taps that
+land in the wrong place are a calibration fix (see [kiosk-setup.md](kiosk-setup.md)).
+
+### Other choices if you do not want to gamble
+
+From safest to cheapest:
+
+| Option | Cost per screen | Pi support in writing? | Notes |
+|---|---|---|---|
+| **Elo 3203L** 32", touch built in (part E720061) | about $1,090 to $1,800 | **Yes**: Elo says its IR and capacitive screens should work on a Pi with no driver ([Elo support](https://elosupport.elotouch.com/hc/en-us/articles/31649853461271-Do-Elo-Products-support-Raspberry-Pi-devices)) | Capacitive: bare finger or thin glove only. Two bring this build to about $2,800 |
+| **ViewSonic TD3207** 32", touch built in ([Variant A](variant-a-recommended.md)) | $1,030 | Partly: ViewSonic says most of its touch monitors use the standard Linux touch driver ([ViewSonic support](https://support.viewsonic.com/en/support/solutions/articles/33000222292-does-viewsonic-provide-linux-drivers-for-monitors-)) | IR touch works with gloves; rated 24/7. Best fit for a plant |
+| **Windows mini PC** instead of the Pi, with any frame | about $150 to $200 (the PC) | GreenTouch does support Windows | The kiosk scripts in this repo are for the Pi; a Windows kiosk guide would need writing first |
+| **IR frame on the Pi 5** (this variant) | $170 to $260 (the frame) | Mixed, see above | Buy one, run the bench test below within the return window, then buy the second |
 
 ### Bench test the frame before mounting anything
 
@@ -70,7 +97,7 @@ Do this on a table with one Pi 5 set up per [kiosk-setup.md](kiosk-setup.md), wi
 5. With the calendar running, tap all four corners of the screen. If taps land in the wrong place, see the touch table in [kiosk-setup.md](kiosk-setup.md).
 6. Swipe left/right to change months and try a two-finger swipe to change years.
 
-If step 2 or 4 fails, return the frame. Do not spend hours on it: either try a different frame or move to the Elo option.
+If step 1 or 2 shows nothing at all, return the frame. If one finger works but two fingers do not, keep it: the « and » buttons replace the two-finger year swipe. Do not spend hours on a frame that is not detected; try a different one or move to one of the other choices above.
 
 ## Tools
 

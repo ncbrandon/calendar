@@ -7,6 +7,11 @@ plug-in simple and one failure never blanks both screens.
 
 **Trade-offs:** it is the second most expensive option, and almost all of the cost is the two monitors.
 
+**Pi compatibility:** ViewSonic says most of its touch monitors use the standard touch driver built into Linux, so no
+software is needed ([ViewSonic support](https://support.viewsonic.com/en/support/solutions/articles/33000222292-does-viewsonic-provide-linux-drivers-for-monitors-)).
+It does not name the Pi 5. Run the bench test in [Variant C](variant-c-middle.md#bench-test-the-frame-before-mounting-anything)
+on the first monitor, within the return window, before hanging it.
+
 ## Parts
 
 Prices checked **November 14, 2026**. A link that goes to a search page means I could not confirm one exact product page; pick a listing with good reviews and the size shown.

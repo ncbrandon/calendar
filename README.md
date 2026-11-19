@@ -47,8 +47,11 @@ flowchart LR
 
 ## Which hardware to build
 
-Prices checked **November 14, 2026**. Touch monitors and Raspberry Pis both cost noticeably more than a year ago,
+Prices checked **November 14, 2026** (screens and touch frames re-checked November 19). Touch monitors and Raspberry Pis both cost noticeably more than a year ago,
 so confirm prices before ordering. Full parts lists with links are in each variant's page.
+
+**Ordering?** Start with the [ordering checklist](docs/ordering-checklist.md).
+**Note:** the Elo 4303L in Variant D is discontinued; only leftover stock remains.
 
 | | **A. Recommended** | B. Budget | C. Middle | D. Premium | E. Off the shelf |
 |---|---|---|---|---|---|
