@@ -33,14 +33,17 @@ Prices checked **November 14, 2026**. A link that goes to a search page means I 
 
 If the ViewSonic is out of stock, the Samsung Odyssey G5 G50F 32" (US model LS32FG502ENXZA) is a good substitute.
 It is 2560x1440, VESA 100x100, and has a height-adjustable stand you will not need on the wall.
-List price is $349.99, but it has sold for $199 to $220 on sale since August 2026, so wait for a sale price.
+List price is $349.99. On November 19, 2026 it was $209.99 at [Newegg](https://www.newegg.com/samsung-ls32fg502enxza-32-qhd-max-180-hz-ips-black/p/N82E16824027385)
+and $219.99 at Amazon; Samsung.com and B&H were at full price. Do not confuse it with the G51F, a different model often on sale for less.
 At $210 each the total rises by about $120, to about $1,180. The Pi will drive it at 1080p or 1440p; OpsBoard looks the same at either.
 Its picture area is the same as any 32" 16:9 panel, so the frame sizing below still applies. Measure the bezel anyway, as it differs from the ViewSonic.
 [Best Buy listing](https://www.bestbuy.com/site/6667827.p)
 
 ### Touch frame brand: GreenTouch
 
-GreenTouch is the most common brand of 32" IR frame in US listings. Its 32" 10-point frames sell for about $200 to $400 depending on seller.
+GreenTouch is the most common brand of 32" IR frame in US listings. On November 19, 2026, 32" 10-point USB frames
+were $166 to $350 on eBay and $189 to $259 on Newegg (frame only, no glass). A version with safety glass and a mounting
+bar is about $575 from Tycotouch. The $200 in the parts list is a fair middle figure.
 Read the next section first: several GreenTouch listings say outright that the frame does not support Raspberry Pi.
 
 ## Will the touch frame work on a Pi 5?

@@ -3,6 +3,10 @@
 **Why this one:** two 43" screens read easily from across a room, and Elo displays are commercial signage built to
 run continuously for years, with edge-to-edge glass that wipes clean.
 
+> **Discontinued (checked November 19, 2026):** Elo has discontinued the 4303L. Resellers still list leftover stock
+> at about $1,190 to $1,300 (Touchwindow, Tecisoft, Barcodes Inc.), but some are out of stock or backordered.
+> You need **two matching units**, so confirm stock of both with one seller before ordering, or ask Elo or the reseller for the current 43" replacement model.
+
 **Trade-offs:**
 - About $1,000 more than Variant A.
 - Each display weighs roughly 60 lb. Two people and stud mounting are not optional.
